@@ -1,0 +1,52 @@
+cidl: 1.0
+info:
+    title: basic-counter
+    version: 1.0
+    summary: 
+        # Basic Counter
+        The program increments a counter every time it gets called. 
+contact:
+    name: Sofia Azcoaga | Coinfabrik
+    url: www.coinfabrik.com
+    email: sofia.azcoaga@coinfabrik.com
+    git: <github>
+license:
+    name: Unlicensed
+    url: none
+methods:
+    add:
+        name: add   # Name twice? 
+        version: 1.0
+        summary: A method that allows the counter to increase N units.
+        parameters:
+            number:
+                type: u32                   # sug: If not specified the type of number (int) could be a default (i32/u32)
+                description: The number to be added
+            sender:
+                type: Signer  # Could be a default type for us. 
+                description: Signer of the tx.
+            accumulator:
+                type: Adder
+                description: The account that holds the accumulator.
+            #   mutability: writable
+types:
+    Adder:
+        summary: Account type that holds a u32.
+        solana:
+            capabilities: false | false # (SIGNER | READONLY) # sug: isSigner: false | isWritable: true  -  Anchor is capable of inferring these
+        owner: program      
+        seeds: <optional>  # We can use as default seeds the name of the account, but we can also provide an optional "seeds" field. This should be enough to generate the PDA address and bump
+        fields:
+            number:
+                type: u32
+                description: The accumulated number.
+    AdderRO: 
+        summary: Account type that keeps record of an accumulated value. 
+        solana: 
+            capabilities: false | true # sug isSiner: false | isWritable: false 
+        owner: program
+        seeds: <opt> 
+        fields: 
+            number: 
+                type: u32
+                description: The accumulated number. 
